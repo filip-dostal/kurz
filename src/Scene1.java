@@ -1,4 +1,6 @@
+import javax.swing.*;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -11,6 +13,9 @@ public class Scene1 extends BasicScene {
     private final static int MOUNTAINS_Y = 9;
     private final List<Point> house = new ArrayList<>();
     private List<Point> houseTranslated = new ArrayList<>();
+    
+    private float sunAlpha = 0.3f;
+    private Timer animationTimer;
 
     public Scene1() {
         house.add(new Point(1, 3));
@@ -24,6 +29,19 @@ public class Scene1 extends BasicScene {
         Matrix transform = Matrix.rotate2D(Math.PI / 4, 2, 2).multiply(Matrix.scale2D(2));
 
         houseTranslated = transform(transform, house);
+        
+        startSunAnimation();
+    }
+
+    private void startSunAnimation() {
+        animationTimer = new Timer(50, e -> {
+            sunAlpha += 0.01f;
+            if (sunAlpha > 1.0f) {
+                sunAlpha = 0.3f;
+            }
+            repaint();
+        });
+        animationTimer.start();
     }
 
     @Override
@@ -36,25 +54,27 @@ public class Scene1 extends BasicScene {
         g.drawImage(readImage("e_1_1_ground_grass1.png"), pointToX(0), pointToY(MOUNTAINS_Y - 14), null);
         g.drawImage(readImage("e_1_1_ground_grass1.png"), 0, pointToY(MOUNTAINS_Y - 14), null);
         Graphics2D g2 = (Graphics2D) g;
-        Color originalColor = g2.getColor();
         Composite originalComposite = g2.getComposite();
+
+        // Mountaisn
         try {
-            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.70f));
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.7f));
             g2.drawImage(readImage("clouds-2.png"), 0, pointToY(MOUNTAINS_Y), null);
         } finally {
             g2.setComposite(originalComposite);
-            g2.setColor(originalColor);
+        }
+
+        // Sun
+        try {
+            g2.setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, sunAlpha));
+            g2.drawImage(readImage("sky_sun.png"), pointToX(10), pointToY(7), null);
+        } finally {
+            g2.setComposite(originalComposite);
         }
         paintHouse(g);
         paintHouseTranslated(g);
     }
-    private void paintLeft(Graphics g) {
-        g.drawImage(readImage("boar_ER.png"), pointToX(0), pointToY(0), null);
-    }
 
-    private void paintRights(Graphics g) {
-        g.drawImage(readImage("insect_RE.png"), 200, 300, null);
-    }
 
     private List<Point> transform(Matrix transform, List<Point> points) {
         List<Point> result = new ArrayList<>(points.size());
