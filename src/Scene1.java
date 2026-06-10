@@ -155,9 +155,9 @@ public class Scene1 extends BasicScene {
         }
 
         // Boars
-        drawBoar(g2, boarX, 0, boarDirection);
-        drawBoar(g2, boar2X, boar2Y, boar2DirX);
-        drawBoar(g2, boar3X, boar3Y, boar3Direction);
+        drawBoar(g2, boarX, 0, boarDirection, 1);
+        drawBoar(g2, boar2X, boar2Y, boar2DirX, 1);
+        drawBoar(g2, boar3X, boar3Y, boar3Direction, 0.5);
 
         // Wheel
         drawRotated(g2, "E_1_1_object_wheel.png", 0, pointToY(-1), Math.PI);
@@ -166,15 +166,15 @@ public class Scene1 extends BasicScene {
         drawRotated(g2, "e_1_1_object_flower1.png", pointToX(5), pointToY(-1), Math.PI / 2);
     }
 
-    private void drawBoar(Graphics2D g2, double worldX, double worldY, double directionX) {
+    private void drawBoar(Graphics2D g2, double worldX, double worldY, double directionX, double scale) {
         BufferedImage boar = readImage("boar_ER.png");
         if (boar != null) {
             int w = boar.getWidth();
             int h = boar.getHeight();
 
             Matrix matrix = directionX > 0
-                    ? Matrix.scale2D(1, 1)
-                    : Matrix.translate2D(w, 0).multiply(Matrix.scale2D(-1, 1));
+                    ? Matrix.scale2D(scale, scale)
+                    : Matrix.translate2D(w, 0).multiply(Matrix.scale2D(-scale, scale));
 
             List<Point> points = imageToPoints(boar);
             List<Integer> colors = imageToColors(boar);
