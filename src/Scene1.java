@@ -31,14 +31,13 @@ public class Scene1 extends BasicScene {
     private double boar3Direction = 1;
 
     public Scene1() {
-        house.add(new Point(1, 3));
-        house.add(new Point(1, 1));
-        house.add(new Point(3, 1));
-        house.add(new Point(3, 3));
-        house.add(new Point(2, 4));
-        house.add(new Point(1, 3));
-        house.add(new Point(3, 3));
-
+//        house.add(new Point(1, 3));
+//        house.add(new Point(1, 1));
+//        house.add(new Point(3, 1));
+//        house.add(new Point(3, 3));
+//        house.add(new Point(2, 4));
+//        house.add(new Point(1, 3));
+//        house.add(new Point(3, 3));
 
 
         startAnimation();
